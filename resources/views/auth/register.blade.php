@@ -32,8 +32,8 @@
 
                         <div class="card">
                             <div class="card-body">
-                                @include('partials.alerts')
                                 <div class="m-sm-3">
+                                    @include('partials.alerts')
                                     <form action="{{ route('register') }}" method="POST">
                                         @csrf
                                         <div class="mb-3">

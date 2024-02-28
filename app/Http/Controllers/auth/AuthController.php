@@ -22,7 +22,7 @@ class AuthController extends Controller
         ]);
 
         if (Auth::attempt($request->except('_token'))) {
-            return redirect()->back()->with(['success' => 'Magic has been spelled!']);
+            return redirect()->route('dashboard');
         } else {
             return redirect()->back()->with(['failure' => 'Invalid login details!']);
         }
@@ -35,22 +35,27 @@ class AuthController extends Controller
 
     public function register(Request $request)
     {
-        $request->validate([
+        $data = $request->validate([
             'name' => ['required', 'max:255', 'string'],
             'email' => ['required', 'max:255', 'email', 'unique:users,email'],
             'password' => ['required', 'min:2', 'max:255', 'confirmed'],
         ]);
 
-        $data = [
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => $request->password,
-        ];
+        // $data = [
+        //     'name' => $request->name,
+        //     'email' => $request->email,
+        //     'password' => $request->password,
+        // ];
 
         if (User::create($data)) {
             return redirect()->back()->with(['success' => 'Magic has been spelled!']);
         } else {
             return redirect()->back()->with(['failure' => 'Magic has failed to spell!']);
         }
+    }
+
+    public function logout() {
+        Auth::logout();
+        return redirect()->route('login')->with(['success' => 'Successfully logged out!']);
     }
 }
