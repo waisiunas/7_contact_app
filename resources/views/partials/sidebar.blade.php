@@ -6,9 +6,15 @@
 
         <ul class="sidebar-nav">
 
-            <li class="sidebar-item active">
+            <li class="sidebar-item">
                 <a class="sidebar-link" href="{{ route('dashboard') }}">
-                    <i class="align-middle" data-feather="book"></i> <span class="align-middle">Blank</span>
+                    <i class="align-middle" data-feather="book"></i> <span class="align-middle">Dashbaord</span>
+                </a>
+            </li>
+
+            <li class="sidebar-item">
+                <a class="sidebar-link" href="{{ route('category') }}">
+                    <i class="align-middle" data-feather="book"></i> <span class="align-middle">Categories</span>
                 </a>
             </li>
         </ul>

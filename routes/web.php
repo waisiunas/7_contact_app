@@ -1,8 +1,11 @@
 <?php
 
 use App\Http\Controllers\auth\AuthController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Middleware\Authenticate;
+use App\Http\Middleware\RedirectIfAuthenticated;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,18 +20,31 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::controller(AuthController::class)->group(function () {
-    Route::get('/', 'login_view')->name('login');
-    Route::post('/', 'login');
-    Route::get('/register', 'register_view')->name('register');
-    Route::post('/register', 'register');
-    Route::post('/logout', 'logout')->name('logout');
+    Route::middleware(RedirectIfAuthenticated::class)->group(function () {
+        Route::get('/', 'login_view')->name('login');
+        Route::post('/', 'login');
+        Route::get('/register', 'register_view')->name('register');
+        Route::post('/register', 'register');
+    });
+
+    Route::middleware(Authenticate::class)->group(function () {
+        Route::post('/logout', 'logout')->name('logout');
+    });
 });
 
-Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+Route::middleware(Authenticate::class)->group(function () {
+    Route::controller(DashboardController::class)->group(function () {
+        Route::get('/dashboard', 'index')->name('dashboard');
+    });
 
-Route::controller(ProfileController::class)->group(function () {
-    Route::get('/profile/show', 'show')->name('profile.show');
-    Route::patch('/profile/details', 'details')->name('profile.details');
-    Route::patch('/profile/password', 'password')->name('profile.password');
-    Route::patch('/profile/picture', 'picture')->name('profile.picture');
+    Route::controller(ProfileController::class)->prefix('profile')->name('profile.')->group(function () {
+        Route::get('/show', 'show')->name('show');
+        Route::patch('/details', 'details')->name('details');
+        Route::patch('/password', 'password')->name('password');
+        Route::patch('/picture', 'picture')->name('picture');
+    });
+
+    Route::controller(CategoryController::class)->group( function () {
+        Route::get('/category', 'index')->name('category');
+    });
 });
