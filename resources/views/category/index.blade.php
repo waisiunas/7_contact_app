@@ -15,37 +15,8 @@
     <div class="row">
         <div class="col-12">
             <div class="card">
-                <div class="card-body">
-                    <table class="table table-bordered m-0">
-                        <thead>
-                            <tr>
-                                <th>Sr. No.</th>
-                                <th>Name</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
+                <div class="card-body" id="response">
 
-                        <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>Family</td>
-                                <td>
-                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                        data-bs-target="#editModal">
-                                        Edit
-                                    </button>
-
-                                    <button type="button" class="btn btn-danger" data-bs-toggle="modal"
-                                        data-bs-target="#deleteModal">
-                                        Delete
-                                    </button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <div class="alert alert-info m-0">
-                        No record found!
-                    </div>
                 </div>
             </div>
         </div>
@@ -56,8 +27,12 @@
 
 @section('script')
     <script>
-        const addRoute = @json(route('api.category.create'));
         const ID = @json(Auth::id());
+        const showAllRoute = @json(route('api.category', Auth::id()));
+        const addRoute = @json(route('api.category.create'));
+        const showSingleRoute = @json(route('api.category.show', ':id'));
+        const editRoute = @json(route('api.category.edit', ':id'));
+
     </script>
 
     <script src="{{ asset('template/js/custom.js') }}"></script>
