@@ -20,5 +20,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::controller(CategoryController::class)->name('api.')->group( function () {
+    Route::get('category/{id}', 'index')->name('category');
     Route::post('category/create', 'store')->name('category.create');
+    Route::get('category/{id}/show', 'show')->name('category.show');
+    Route::patch('category/{id}/edit', 'update')->name('category.edit');
 });
