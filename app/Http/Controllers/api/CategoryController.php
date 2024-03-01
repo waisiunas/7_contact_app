@@ -12,9 +12,11 @@ class CategoryController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index($id)
     {
-        //
+        return response()->json([
+            'categories' => Category::where('user_id', '=', $id)->get(),
+        ]);
     }
 
     /**
@@ -51,23 +53,49 @@ class CategoryController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Category $category)
+    public function show($id)
     {
-        //
+        return response()->json([
+            'category' => Category::find($id),
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Category $category)
+    public function update(Request $request, $id)
     {
-        //
+        $category = Category::find($id);
+
+        $validator = Validator::make($request->all(), [
+            'name' => ['required', 'string', 'max:255'],
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'errors' => $validator->messages(),
+            ]);
+        }
+
+        $data = [
+            'name' => $request->name,
+        ];
+
+        if ($category->update($data)) {
+            return response()->json([
+                'success' => 'Magic has been spelled!'
+            ]);
+        } else {
+            return response()->json([
+                'failure' => 'Magic has failed to spell!'
+            ]);
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Category $category)
+    public function destroy($id)
     {
         //
     }
