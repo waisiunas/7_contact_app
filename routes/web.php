@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\auth\AuthController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Middleware\Authenticate;
@@ -44,7 +45,14 @@ Route::middleware(Authenticate::class)->group(function () {
         Route::patch('/picture', 'picture')->name('picture');
     });
 
-    Route::controller(CategoryController::class)->group( function () {
+    Route::controller(CategoryController::class)->group(function () {
         Route::get('/category', 'index')->name('category');
+    });
+
+    Route::controller(ContactController::class)->group(function () {
+        Route::get("/contact", 'index')->name('contact');
+        Route::get("/contact/create", 'create')->name('contact.create');
+        Route::post("/contact/create", 'store');
+        Route::get("/contact/{contact}/show", 'show')->name('contact.show');
     });
 });

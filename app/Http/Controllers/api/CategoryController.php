@@ -97,6 +97,16 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $category = Category::find($id);
+
+        if ($category->delete()) {
+            return response()->json([
+                'success' => 'Magic has been spelled!'
+            ]);
+        } else {
+            return response()->json([
+                'failure' => 'Magic has failed to spell!'
+            ]);
+        }
     }
 }

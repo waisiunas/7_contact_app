@@ -46,6 +46,7 @@ addFormElement.addEventListener("submit", async function (e) {
         } else if (result.success) {
             addAlertElement.innerHTML = alert(result.success, "success");
             addNameElement.value = "";
+            showCategories();
         } else if (result.failure) {
             addAlertElement.innerHTML = alert(result.failure);
         } else {
@@ -61,7 +62,7 @@ async function showCategories() {
 
     const responseElement = document.querySelector("#response");
 
-    if (result.categories.length > 1) {
+    if (result.categories.length > 0) {
         let rows = "";
 
         result.categories.forEach(function (category, index) {
@@ -69,14 +70,12 @@ async function showCategories() {
             <td>${index + 1}</td>
             <td>${category.name}</td>
             <td>
-                <button type="button" class="btn btn-primary" onclick="editCategory(${
-                    category.id
-                })" data-bs-toggle="modal"
+                <button type="button" class="btn btn-primary" onclick="editCategory(${category.id})" data-bs-toggle="modal"
                     data-bs-target="#editModal">
                     Edit
                 </button>
 
-                <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                <button type="button" class="btn btn-danger" onclick="deleteCategory(${category.id})" data-bs-toggle="modal"
                     data-bs-target="#deleteModal">
                     Delete
                 </button>
@@ -111,6 +110,7 @@ async function editCategory(id) {
     const apiURL = showSingleRoute.replace(":id", id);
     const response = await fetch(apiURL);
     const result = await response.json();
+    clearEditModal();
 
     document.querySelector("#edit-name").value = result.category.name;
 }
@@ -171,9 +171,63 @@ editFormElement.addEventListener("submit", async function (e) {
     }
 });
 
+function deleteCategory(id) {
+    mainId = id;
+}
+
+const deleteFormElement = document.querySelector("#delete-form");
+
+deleteFormElement.addEventListener("submit", async function (e) {
+    e.preventDefault();
+
+    const apiURL = deleteRoute.replace(":id", mainId);
+
+    const response = await fetch(apiURL, {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    });
+
+    const result = await response.json();
+
+    const alertElement = document.querySelector("#alert");
+
+    if (result.success) {
+        alertElement.innerHTML = alert(result.success, "success");
+        showCategories();
+        closeDeleteModal();
+    } else if (result.failure) {
+        alertElement.innerHTML = alert(result.failure);
+    } else {
+        alertElement.innerHTML = alert();
+    }
+});
+
 function alert(msg = "Something went wrong!", cls = "danger") {
     return `<div class="alert alert-${cls} alert-dismissible fade show" role="alert">
     ${msg}
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
   </div>`;
+}
+
+function clearAddModal() {
+    addAlertElement.innerHTML = "";
+    const addNameElement = document.querySelector("#add-name");
+    addNameElement.classList.remove("is-invalid");
+}
+
+function clearEditModal() {
+    editAlertElement.innerHTML = "";
+    const editNameElement = document.querySelector("#edit-name");
+    editNameElement.classList.remove("is-invalid");
+}
+
+function closeDeleteModal() {
+    const modalElement = document.querySelector('#deleteModal');
+    const modal = bootstrap.Modal.getInstance(modalElement);
+
+    if (modal) {
+        modal.hide();
+    }
 }
