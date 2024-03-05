@@ -37,7 +37,7 @@
                                         <td>{{ $contact->first_name . ' ' . $contact->last_name }}</td>
                                         <td>{{ $contact->mobile_number }}</td>
                                         <td>{{ $contact->email }}</td>
-                                        <td>{{ $contact->category_id }}</td>
+                                        <td>{{ $contact->category->name }}</td>
                                         <td>
                                             <a href="{{ route('contact.show', $contact) }}" class="btn btn-primary">Show</a>
                                         </td>
@@ -49,7 +49,7 @@
                         <div class="alert alert-info mb-0">No record found!</div>
                     @endif
 
-                    {{-- {{ $contacts->links() }} --}}
+                    {{ $contacts->links() }}
                 </div>
             </div>
         </div>

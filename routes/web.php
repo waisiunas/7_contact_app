@@ -54,5 +54,12 @@ Route::middleware(Authenticate::class)->group(function () {
         Route::get("/contact/create", 'create')->name('contact.create');
         Route::post("/contact/create", 'store');
         Route::get("/contact/{contact}/show", 'show')->name('contact.show');
+        Route::get("/contact/{contact}/edit", 'edit')->name('contact.edit');
+        Route::patch("/contact/{contact}/edit", 'update');
+        Route::patch("/contact/{contact}/picture", 'picture')->name('contact.picture');
+        Route::delete("/contact/{contact}/destroy", 'destroy')->name('contact.destroy');
     });
 });
+
+// composer require --dev barryvdh/laravel-ide-helper
+// php artisan ide-helper:generate

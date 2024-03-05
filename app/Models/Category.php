@@ -13,4 +13,10 @@ class Category extends Model
         'user_id',
         'name',
     ];
+
+
+    public function contacts()
+    {
+        return $this->hasMany(Contact::class);
+    }
 }
