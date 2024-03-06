@@ -3,11 +3,11 @@
 @section('content')
     <div class="row">
         <div class="col-6">
-            <h1 class="h3 mb-3">Contacts</h1>
+            <h1 class="h3 mb-3">Deleted Contacts</h1>
         </div>
         <div class="col-6 text-end">
-            <a href="{{ route('contact.create') }}" class="btn btn-outline-primary">
-                Add Contact
+            <a href="{{ route('contact') }}" class="btn btn-outline-primary">
+                Contacts
             </a>
         </div>
     </div>
@@ -39,7 +39,17 @@
                                         <td>{{ $contact->email }}</td>
                                         <td>{{ $contact->category->name }}</td>
                                         <td>
-                                            <a href="{{ route('contact.show', $contact) }}" class="btn btn-primary">Show</a>
+                                            <form action="{{ route('contact.restore', $contact->id) }}" method="post" class="d-inline">
+                                                @csrf
+                                                @method('PATCH')
+                                                <input type="submit" value="Restore" class="btn btn-primary">
+                                            </form>
+
+                                            <form action="{{ route('contact.delete', $contact->id) }}" method="post" class="d-inline">
+                                                @csrf
+                                                @method('DELETE')
+                                                <input type="submit" value="Delete" class="btn btn-danger">
+                                            </form>
                                         </td>
                                     </tr>
                                 @endforeach
