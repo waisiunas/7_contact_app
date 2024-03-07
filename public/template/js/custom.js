@@ -69,6 +69,7 @@ async function showCategories() {
             rows += `<tr>
             <td>${index + 1}</td>
             <td>${category.name}</td>
+            <td>${category.contacts_count}</td>
             <td>
                 <button type="button" class="btn btn-primary" onclick="editCategory(${category.id})" data-bs-toggle="modal"
                     data-bs-target="#editModal">
@@ -88,6 +89,7 @@ async function showCategories() {
             <tr>
                 <th>Sr. No.</th>
                 <th>Name</th>
+                <th>Contacts</th>
                 <th>Action</th>
             </tr>
         </thead>

@@ -15,7 +15,7 @@ class CategoryController extends Controller
     public function index($id)
     {
         return response()->json([
-            'categories' => Category::where('user_id', '=', $id)->get(),
+            'categories' => Category::where('user_id', '=', $id)->withCount('contacts')->get(),
         ]);
     }
 
